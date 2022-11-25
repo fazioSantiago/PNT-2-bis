@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using TPDetailing2.Models;
 
@@ -12,13 +15,12 @@ namespace TPDetailing2.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Servicios");
         }
 
-        public IActionResult Privacy()
+        public IActionResult MensajeError()
         {
             return View();
         }
