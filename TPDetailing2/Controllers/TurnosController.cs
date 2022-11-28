@@ -24,12 +24,14 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Turnos
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
         public async Task<IActionResult> Index()
         {
             var dbDetailing = _context.Turno.Include(t => t.Empleado).Include(t => t.Servicio).Include(t => t.cliente);
             return View(await dbDetailing.ToListAsync());
         }
+
+
 
         // GET: Turnos/Details/5
         [Authorize(Roles = "EMPLEADO, ADMIN")]
@@ -55,7 +57,7 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Turnos/Create
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
             ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido");
@@ -85,7 +87,7 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Turnos/Edit/5
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+       [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Turno == null)

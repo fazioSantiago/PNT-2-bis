@@ -141,6 +141,8 @@ namespace TPDetailing2.Areas.Identity.Pages.Account
             }
 
 
+
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -186,7 +188,7 @@ namespace TPDetailing2.Areas.Identity.Pages.Account
                     // cuando se registra por la pagina le doy el rol de cliente
                     await _userManager.AddToRoleAsync(user, "CLIENTE");
                     //voy al controlador de clientes > accion create y paso el objeto user
-                    return RedirectToAction("CREATE", "Clientes", user);
+                    return RedirectToAction("Create", "Clientes", user);
 
 
                 }

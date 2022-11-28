@@ -21,9 +21,13 @@
             <th>                
                 @Html.DisplayNameFor(model => model.FotoUrl)
             </th>
-            <th>
+            @if (User.IsInRole("ADMIN"))
+            {
+             <th>
                 @Html.DisplayNameFor(model => model.Costo)
-            </th>
+            </th>  
+            }
+           
             <th>
                 @Html.DisplayNameFor(model => model.PrecioFinal)
             </th>
@@ -42,18 +46,39 @@
             <td>
                 <img src="@item.FotoUrl" height="75" alt="@item.Nombre"/>
             </td>
+            @if (User.IsInRole("ADMIN"))
+            {
             <td>
                 @Html.DisplayFor(modelItem => item.Costo)
             </td>
+            }
+           
             <td>
                 @Html.DisplayFor(modelItem => item.PrecioFinal)
             </td>
+            @if (User.IsInRole("ADMIN"))
+            {
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ServicioId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ServicioId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ServicioId">Delete</a>
             </td>
+            }
+
+            @if (User.IsInRole("CLIENTE"))
+            {
+            <td>
+                <a asp-action="Index" asp-controller="Turno" asp-route-id="@item.ServicioId">Reservar</a>
+            </td>
+            } 
+           
+         
         </tr>
 }
     </tbody>
 </table>
+
+@if ( !User.IsInRole("CLIENTE") || !User.IsInRole("ADMIN") || !User.IsInRole("EMPLEADO") )
+{
+    <h5 class="border border-1 border-danger text-danger">Login para reservar</h5>
+}

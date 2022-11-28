@@ -53,7 +53,6 @@ namespace TPDetailing2.Controllers
             return View(cliente);
         }
         // GET: Clientes/Create
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
         public IActionResult Create(IdentityUser? user)
         {
             if (user==null)
@@ -96,7 +95,7 @@ namespace TPDetailing2.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UsuarioId,Nombre,Apellido,Email,Telefono")] Cliente cliente)
@@ -109,7 +108,7 @@ namespace TPDetailing2.Controllers
                 {
                     _context.Add(cliente);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "Servicios");
                 }                
             }
             return View(cliente);
