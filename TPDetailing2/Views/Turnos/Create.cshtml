@@ -13,7 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input class="form-check-input" asp-for="Realizado" value="false" hidden />
+            <input class="form-check-input" asp-for="Disponible" value="false" hidden />
             
             <div class="form-group">
                 <label asp-for="Fecha" class="control-label"></label>
@@ -34,7 +34,7 @@
             </div>*@
             <input class="form-check-input" asp-for="ClienteId" value="null" hidden />
             <input class="form-check-input" asp-for="ServicioId" value="null" hidden />
-            <input class="form-check-input" asp-for="EmpleadoId" value="null" hidden />
+            @*<input class="form-check-input" asp-for="EmpleadoId" value="null" hidden />*@
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary mt-2" />

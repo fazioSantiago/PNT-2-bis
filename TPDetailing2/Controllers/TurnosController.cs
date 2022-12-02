@@ -27,9 +27,11 @@ namespace TPDetailing2.Controllers
         [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
         public async Task<IActionResult> Index(int id)
         {
-            //HttpContext.Session.SetInt32("idServicio", (int)id);
-            TempData["ServicioId2"] = id;
-            //var dbDetailing = _context.Turno.Include(t => t.Empleado).Include(t => t.Servicio).Include(t => t.cliente);
+            Servicio s = await _context.Servicio.FindAsync(id);
+            TempData["ServicioId2"] = s.ServicioId;
+            TempData["ServicioNom"] = s.Nombre;
+            TempData["ServicioPre"] = s.PrecioFinal;
+
             List<Turno> turnos = await _context.Turno.ToListAsync();
 
             return View(turnos);

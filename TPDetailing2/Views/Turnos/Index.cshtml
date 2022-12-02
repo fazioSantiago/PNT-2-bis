@@ -20,7 +20,7 @@
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Realizado)
+                @Html.DisplayNameFor(model => model.Disponible)
             </th>
             @if (User.IsInRole("ADMIN"))
             {
@@ -30,9 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Servicio)
             </th>
-            <th>
+@*            <th>
                 @Html.DisplayNameFor(model => model.Empleado)
-            </th>  
+            </th>*@  
             }
      
             <th></th>
@@ -45,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
                 <td>
-            @if (!item.Realizado)
+            @if (!item.Disponible)
             {
                 <a class="btn btn-primary" asp-action="CargarTurno" asp-route-id="@item.TurnoId">
                     Reservar
@@ -65,9 +65,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Servicio.Descripcion)
             </td>
-            <td>
+@*            <td>
                 @Html.DisplayFor(modelItem => item.Empleado.Apellido)
-            </td>
+            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TurnoId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.TurnoId">Details</a> |

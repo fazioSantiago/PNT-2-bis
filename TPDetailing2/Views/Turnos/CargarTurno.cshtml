@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "CargarTurno";
 }
+@{
+    //int servicioId = TempData["ServicioId2"];
+    //var servicioPre = (double)TempData["ServicioPre"];
+    //var servicioNom = (string)TempData["ServicioNom"];
+    var userId = (int)TempData["UserID"];
+}
 
 <h1>Confirmar Turno</h1>
 
@@ -10,39 +16,44 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+
+        <div>
+            <label class="control-label">Servicio</label>
+            <input type="text" value=@TempData["ServicioNom"] readonly />
+        </div>
+
+        <div>
+            <label class="control-label">Importe</label>
+            <input type="text" value=@TempData["ServicioPre"] readonly />
+        </div>
+
         <form asp-action="CargarTurno">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <input type="hidden" asp-for="TurnoId" />
-
-            <input type="hidden" asp-for="Realizado" value=true />
+            <input type="hidden" asp-for="Disponible" value=true />
             
             <div class="form-group">
                 <label asp-for=Fecha class="control-label"></label>
-                @*<input asp-for=Fecha type="datetime" value=@Model.Fecha class="form-control" disabled />*@
                 <input asp-for="Fecha" class="form-control" readonly/>
             </div>
+
             <div class="form-group">
-                @{
-                    var userId = (int)TempData["UserID"];
-                }
                 <label asp-for=ClienteId class="control-label"></label>
                 <input asp-for=ClienteId value=@userId class="form-control" readonly/>
-                
             </div>
+
             <div class="form-group">
-                @{
-                 var servicioId = (int)TempData["ServicioId2"];
-                }
                 <label asp-for=ServicioId class="control-label"></label>
-                <input asp-for=ServicioId value=@servicioId class="form-control" readonly/>
+                <input asp-for=ServicioId value=@TempData["ServicioId2"] class="form-control" readonly />
             </div>
+
             @*<div class="form-group">
                 <label asp-for="EmpleadoId" class="control-label"></label>
                 <select asp-for="EmpleadoId" class="form-control" asp-items="ViewBag.EmpleadoId"></select>
             </div>*@
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Confirmar" class="btn btn-primary" />
             </div>
         </form>
     </div>
