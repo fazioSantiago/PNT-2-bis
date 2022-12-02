@@ -2,13 +2,15 @@
 {
     public class Detailing
     {
-        List<Turno>? turnosDisponibles = null;
 
-        List<Cliente>? clientes = null;
+        //List<Turno>? turnosDisponibles = null;
 
-        List<Servicio>? servicios = null;
+        //List<Cliente>? clientes = null;
 
-        List<Empleado>? empleados = null;        
+        //List<Servicio>? servicios = null;
+
+        //List<Empleado>? empleados = null;        
+        //Borrar las tablas
 
     }
 }

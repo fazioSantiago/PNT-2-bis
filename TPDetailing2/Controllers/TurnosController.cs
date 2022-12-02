@@ -25,10 +25,14 @@ namespace TPDetailing2.Controllers
 
         // GET: Turnos
         [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var dbDetailing = _context.Turno.Include(t => t.Empleado).Include(t => t.Servicio).Include(t => t.cliente);
-            return View(await dbDetailing.ToListAsync());
+            //HttpContext.Session.SetInt32("idServicio", (int)id);
+            TempData["ServicioId2"] = id;
+            //var dbDetailing = _context.Turno.Include(t => t.Empleado).Include(t => t.Servicio).Include(t => t.cliente);
+            List<Turno> turnos = await _context.Turno.ToListAsync();
+
+            return View(turnos);
         }
 
 
@@ -43,7 +47,7 @@ namespace TPDetailing2.Controllers
             }
 
             var turno = await _context.Turno
-                .Include(t => t.Empleado)
+                //.Include(t => t.Empleado)
                 .Include(t => t.Servicio)
                 .Include(t => t.cliente)
                 .FirstOrDefaultAsync(m => m.TurnoId == id);
@@ -80,7 +84,7 @@ namespace TPDetailing2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
+            //ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
             ViewData["ServicioId"] = new SelectList(_context.Servicio, "ServicioId", "Descripcion", turno.ServicioId);
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", turno.ClienteId);
             return View(turno);
@@ -100,7 +104,7 @@ namespace TPDetailing2.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
+            //ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
             ViewData["ServicioId"] = new SelectList(_context.Servicio, "ServicioId", "Descripcion", turno.ServicioId);
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", turno.ClienteId);
             return View(turno);
@@ -139,7 +143,7 @@ namespace TPDetailing2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
+            //ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
             ViewData["ServicioId"] = new SelectList(_context.Servicio, "ServicioId", "Descripcion", turno.ServicioId);
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", turno.ClienteId);
             return View(turno);
@@ -155,7 +159,7 @@ namespace TPDetailing2.Controllers
             }
 
             var turno = await _context.Turno
-                .Include(t => t.Empleado)
+                //.Include(t => t.Empleado)
                 .Include(t => t.Servicio)
                 .Include(t => t.cliente)
                 .FirstOrDefaultAsync(m => m.TurnoId == id);
@@ -193,6 +197,40 @@ namespace TPDetailing2.Controllers
         private bool TurnoExists(int id)
         {
           return _context.Turno.Any(e => e.TurnoId == id);
+        }
+
+        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        [HttpGet]
+        public async Task<IActionResult> CargarTurno(int id)
+        {
+            string mail = _userManager.GetUserName(User);
+            Cliente cliente = await ClienteExists2(mail);
+            int idU = cliente.UsuarioId;
+            TempData["UserID"] = idU;
+            Turno? t = await _context.Turno.FindAsync(id);
+            return View(t);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CargarTurno(Turno turno)
+        {
+            if (ModelState.IsValid)
+            {
+
+                _context.Update(turno);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(turno);
+        }
+
+        private async Task<Cliente> ClienteExists2(string? Email)
+        {
+            var cliente = await _context.Cliente.Where(e => e.Email == Email).FirstOrDefaultAsync();
+
+            return cliente;
         }
     }
 }

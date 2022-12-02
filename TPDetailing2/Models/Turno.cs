@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TPDetailing2.Models
@@ -9,7 +10,9 @@ namespace TPDetailing2.Models
         public int TurnoId { get; set; }
 
         public DateTime? Fecha { get; set; }
-        public bool Realizado { get; set; }
+
+        [DisplayName("Disponible")]
+        public bool Disponible { get; set; }
         
         public int? ClienteId { get; set; }
         
@@ -21,10 +24,10 @@ namespace TPDetailing2.Models
         [ForeignKey("ServicioId")]
         public Servicio? Servicio { get; set; }
 
-        public int? EmpleadoId { get; set; }
+        //public int? EmpleadoId { get; set; }
         
-        [ForeignKey ("EmpleadoId")]
-        public Empleado? Empleado { get; set; }
+        //[ForeignKey ("EmpleadoId")]
+        //public Empleado? Empleado { get; set; }
         
     }
 }

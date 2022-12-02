@@ -68,7 +68,7 @@
             @if (User.IsInRole("CLIENTE"))
             {
             <td>
-                <a asp-action="Index" asp-controller="Turno" asp-route-id="@item.ServicioId">Reservar</a>
+                <a asp-action="Index" asp-controller="Turnos" asp-route-id="@item.ServicioId">Reservar</a>
             </td>
             } 
            

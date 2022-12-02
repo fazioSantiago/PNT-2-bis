@@ -6,9 +6,13 @@
 
 <h1>Turnos</h1>
 
-<p>
+@if (User.IsInRole("ADMIN"))
+{
+ <p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>  
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -18,6 +22,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Realizado)
             </th>
+            @if (User.IsInRole("ADMIN"))
+            {
             <th>
                 @Html.DisplayNameFor(model => model.cliente)
             </th>
@@ -26,7 +32,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Empleado)
-            </th>
+            </th>  
+            }
+     
             <th></th>
         </tr>
     </thead>
@@ -36,9 +44,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Realizado)
+                <td>
+            @if (!item.Realizado)
+            {
+                <a class="btn btn-primary" asp-action="CargarTurno" asp-route-id="@item.TurnoId">
+                    Reservar
+                </a>
+            } else {
+                <a class="btn btn-danger">
+                    No Disponible
+                </a>
+            }
             </td>
+         
+        @if (User.IsInRole("ADMIN"))
+        {
             <td>
                 @Html.DisplayFor(modelItem => item.cliente.Apellido)
             </td>
@@ -53,6 +73,8 @@
                 <a asp-action="Details" asp-route-id="@item.TurnoId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.TurnoId">Delete</a>
             </td>
+        }
+       
         </tr>
 }
     </tbody>

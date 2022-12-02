@@ -13,7 +13,7 @@ using TPDetailing2.Models;
         {
         }
 
-        public DbSet<TPDetailing2.Models.Cliente> Cliente { get; set; } = default!;
+    public DbSet<TPDetailing2.Models.Cliente> Cliente { get; set; } = default!;
 
         public DbSet<TPDetailing2.Models.Empleado> Empleado { get; set; }
 
@@ -21,3 +21,20 @@ using TPDetailing2.Models;
 
         public DbSet<TPDetailing2.Models.Turno> Turno { get; set; }
     }
+
+    //public class DetailingContext : DbContext
+    //{
+    //    public virtual DbSet<Cliente> Clientes { get; set; }
+    //    public virtual DbSet<Turno> Turnos { get; set; }
+    //    public virtual DbSet<Servicio> Servicios { get; set; }
+
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    {
+    //        //Santi
+    //        optionsBuilder.UseSqlServer("Data Source=DESKTOP-5MUUJS2\\SQLEXPRESS; Initial Catalog = ORTDetailingF; Integrated Security = true");
+
+    //        //javier
+    //        //optionsBuilder.UseSqlServer("Data Source=.; Initial Catalog=ORTDetailing; Integrated Security=true;");
+
+    //    }
+    //}
