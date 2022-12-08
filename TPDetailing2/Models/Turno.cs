@@ -12,7 +12,7 @@ namespace TPDetailing2.Models
         public DateTime? Fecha { get; set; }
 
         [DisplayName("Disponible")]
-        public bool Disponible { get; set; }
+        public bool Disponible { get; set; } = true;
         
         public int? ClienteId { get; set; }
         
@@ -24,10 +24,6 @@ namespace TPDetailing2.Models
         [ForeignKey("ServicioId")]
         public Servicio? Servicio { get; set; }
 
-        //public int? EmpleadoId { get; set; }
-        
-        //[ForeignKey ("EmpleadoId")]
-        //public Empleado? Empleado { get; set; }
         
     }
 }

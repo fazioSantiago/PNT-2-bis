@@ -19,7 +19,13 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                       
+
+                        @if (User.IsInRole("ADMIN"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Turnos" asp-action="DetalleFacturacion">Detalle Facturacion</a>
+                            </li>
+                        }
                         
                         @if (User.IsInRole("ADMIN"))
                         {

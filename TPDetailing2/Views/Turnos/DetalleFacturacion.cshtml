@@ -1,0 +1,90 @@
+﻿@model IEnumerable<TPDetailing2.Models.Turno>
+
+@{
+    ViewData["Title"] = "Detalle Facturación";
+    int total = 0;
+}
+
+<h1>Detalle Facturación</h1>
+<div>
+   <a class="btn btn-danger" asp-action="Filtros">Filtrar</a>
+</div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fecha)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cliente.UsuarioId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Servicio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Servicio.Costo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Servicio.PrecioFinal)
+                </th>
+                <th>
+                    Ganancia Neta
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                @if (!item.Disponible)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.cliente.UsuarioId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Servicio.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Servicio.Costo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Servicio.PrecioFinal)
+                        </td>
+                        <td>
+                            @{
+                                var costo = (int)item.Servicio.Costo;
+                                var precio = (int)item.Servicio.PrecioFinal;
+                                int ganancia = precio - costo;
+                                total += ganancia;
+                            }
+                            @ganancia
+                        </td>
+
+                    </tr>
+                }
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="text-success">
+                    Ganancia Total:
+                </td>
+                <td class="text-success">
+                    @total
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+

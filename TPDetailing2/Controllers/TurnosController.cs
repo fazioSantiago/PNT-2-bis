@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 using TPDetailing2.Models;
 
 namespace TPDetailing2.Controllers
@@ -35,12 +37,12 @@ namespace TPDetailing2.Controllers
                 TempData["ServicioPre1"] = s.PrecioFinal;
             }
 
-            //List<Turno> turnos = await _context.Turno.ToListAsync();
             List<Turno> turnos = await _context.Turno
                                 .Include(t => t.Servicio)
                                 .Include(t => t.cliente)
                                 .ToListAsync();
 
+            
             return View(turnos);            
         }
 
@@ -62,10 +64,7 @@ namespace TPDetailing2.Controllers
         public async Task<IActionResult> CargarTurno(Turno turno)
         {
             if (ModelState.IsValid)
-            {
-                //turno.cliente = await _context.Cliente.FindAsync(turno.ClienteId);
-                //turno.Servicio = await _context.Servicio.FindAsync(turno.ServicioId);
-               
+            {              
                 _context.Update(turno);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Servicios");
@@ -80,7 +79,69 @@ namespace TPDetailing2.Controllers
             return cliente;
         }
 
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> DetalleFacturacion (Filtro f)
+        {
+            List<Turno> turnos;
 
+            if (f.idCliente == null && f.idServicio == null && f.incio == null && f.final == null)
+            {
+                turnos = await _context.Turno
+                        .Include(t => t.Servicio)
+                        .Include(t => t.cliente)
+                        .ToListAsync();
+            }
+            else
+            {
+                turnos = await _context.Turno
+                    .Include(t => t.Servicio)
+                    .Include(t => t.cliente)
+                    .Where(t => t.ServicioId == f.idServicio)
+                    .ToListAsync();
+            }
+
+            return View(turnos);
+        }
+
+        public async Task<IActionResult> ListaFiltros(Filtro f)
+        {
+            List<Turno> turnos;
+
+            if (f == null)
+            {
+                turnos = await _context.Turno
+                        .Include(t => t.Servicio)
+                        .Include(t => t.cliente)
+                        .ToListAsync();
+            } 
+            else
+            {
+                turnos = await _context.Turno
+                    .Where(t => t.ServicioId == f.idServicio)
+                    .ToListAsync();
+            }
+            return RedirectToAction("DetalleFacturacion", turnos);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Filtros()
+        {
+            ViewBag.Servicios = new SelectList(_context.Servicio, "ServicioId", "Nombre");
+            ViewBag.Clientes = new SelectList(_context.Cliente, "UsuarioId", "Email");
+
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> Filtros(Filtro f)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("DetalleFacturacion", f);
+            }
+            return View(f);
+        }
 
         // GET: Turnos/Details/5
         [Authorize(Roles = "ADMIN")]
@@ -108,7 +169,6 @@ namespace TPDetailing2.Controllers
         [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
-            ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido");
             ViewData["ServicioId"] = new SelectList(_context.Servicio, "ServicioId", "Descripcion");
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido");
             return View();
@@ -120,7 +180,7 @@ namespace TPDetailing2.Controllers
         [Authorize(Roles = "ADMIN, CLIENTE")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TurnoId,Fecha,Realizado,ClienteId,ServicioId,EmpleadoId")] Turno turno)
+        public async Task<IActionResult> Create([Bind("TurnoId,Fecha,Realizado,ClienteId,ServicioId")] Turno turno)
         {
             if (ModelState.IsValid)
             {
@@ -128,7 +188,6 @@ namespace TPDetailing2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
             ViewData["ServicioId"] = new SelectList(_context.Servicio, "ServicioId", "Descripcion", turno.ServicioId);
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", turno.ClienteId);
             return View(turno);
@@ -148,7 +207,6 @@ namespace TPDetailing2.Controllers
             {
                 return NotFound();
             }
-            //ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
             ViewData["ServicioId"] = new SelectList(_context.Servicio, "ServicioId", "Descripcion", turno.ServicioId);
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", turno.ClienteId);
             return View(turno);
@@ -160,7 +218,7 @@ namespace TPDetailing2.Controllers
         [Authorize(Roles = "ADMIN, CLIENTE")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TurnoId,Fecha,Realizado,ClienteId,ServicioId,EmpleadoId")] Turno turno)
+        public async Task<IActionResult> Edit(int id, [Bind("TurnoId,Fecha,Realizado,ClienteId,ServicioId")] Turno turno)
         {
             if (id != turno.TurnoId)
             {
@@ -187,7 +245,6 @@ namespace TPDetailing2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["EmpleadoId"] = new SelectList(_context.Empleado, "UsuarioId", "Apellido", turno.EmpleadoId);
             ViewData["ServicioId"] = new SelectList(_context.Servicio, "ServicioId", "Descripcion", turno.ServicioId);
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "UsuarioId", "Apellido", turno.ClienteId);
             return View(turno);
@@ -203,7 +260,6 @@ namespace TPDetailing2.Controllers
             }
 
             var turno = await _context.Turno
-                //.Include(t => t.Empleado)
                 .Include(t => t.Servicio)
                 .Include(t => t.cliente)
                 .FirstOrDefaultAsync(m => m.TurnoId == id);
