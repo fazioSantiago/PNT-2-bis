@@ -6,9 +6,13 @@
 
 <h1>Servicio</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("ADMIN"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -78,7 +82,7 @@
     </tbody>
 </table>
 
-@if ( !User.IsInRole("CLIENTE") || !User.IsInRole("ADMIN") || !User.IsInRole("EMPLEADO") )
+@if ( !User.IsInRole("CLIENTE") && !User.IsInRole("ADMIN") && !User.IsInRole("EMPLEADO") )
 {
     <h5 class="border border-1 border-danger text-danger">Login para reservar</h5>
 }

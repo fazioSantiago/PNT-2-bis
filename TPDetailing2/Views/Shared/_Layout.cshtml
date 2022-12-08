@@ -19,21 +19,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                       
                         
                         @if (User.IsInRole("ADMIN"))
-                        {
-                            <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a>
-                            </li>
-                        }
-                        
-                        @if (User.IsInRole("EMPLEADO") || User.IsInRole("ADMIN"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
                             </li>
                         }
-                        @if (User.IsInRole("ADMIN") || User.IsInRole("EMPLEADO") || User.IsInRole("CLIENTE"))
+                        @if (User.IsInRole("ADMIN") || User.IsInRole("CLIENTE"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Turnos" asp-action="Index">Turnos</a>

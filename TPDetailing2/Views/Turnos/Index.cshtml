@@ -30,16 +30,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.Servicio)
             </th>
-@*            <th>
-                @Html.DisplayNameFor(model => model.Empleado)
-            </th>*@  
             }
      
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Fecha)
@@ -60,14 +57,12 @@
         @if (User.IsInRole("ADMIN"))
         {
             <td>
-                @Html.DisplayFor(modelItem => item.cliente.Apellido)
+                @Html.DisplayFor(modelItem => item.cliente.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Servicio.Descripcion)
+                @Html.DisplayFor(modelItem => item.Servicio.Nombre)
             </td>
-@*            <td>
-                @Html.DisplayFor(modelItem => item.Empleado.Apellido)
-            </td>*@
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TurnoId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.TurnoId">Details</a> |

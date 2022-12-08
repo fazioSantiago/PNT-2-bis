@@ -24,23 +24,66 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Turnos
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         public async Task<IActionResult> Index(int id)
+        {   
+            if (id != 0)
+            {
+                Servicio? s = await _context.Servicio.FindAsync(id);         
+                TempData["ServicioId1"] = s.ServicioId;
+                TempData["ServicioNom1"] = s.Nombre; 
+                TempData["ServicioPre1"] = s.PrecioFinal;
+            }
+
+            //List<Turno> turnos = await _context.Turno.ToListAsync();
+            List<Turno> turnos = await _context.Turno
+                                .Include(t => t.Servicio)
+                                .Include(t => t.cliente)
+                                .ToListAsync();
+
+            return View(turnos);            
+        }
+
+        [Authorize(Roles = "ADMIN, CLIENTE")]
+        [HttpGet]
+        public async Task<IActionResult> CargarTurno(int id)
         {
-            Servicio s = await _context.Servicio.FindAsync(id);
-            TempData["ServicioId2"] = s.ServicioId;
-            TempData["ServicioNom"] = s.Nombre;
-            TempData["ServicioPre"] = s.PrecioFinal;
+            string mail = _userManager.GetUserName(User);
+            Cliente cliente = await ClienteExists2(mail);
+            int idU = cliente.UsuarioId;
+            TempData["UserID"] = idU;
 
-            List<Turno> turnos = await _context.Turno.ToListAsync();
+            Turno? t = await _context.Turno.FindAsync(id);
 
-            return View(turnos);
+            return View(t);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CargarTurno(Turno turno)
+        {
+            if (ModelState.IsValid)
+            {
+                //turno.cliente = await _context.Cliente.FindAsync(turno.ClienteId);
+                //turno.Servicio = await _context.Servicio.FindAsync(turno.ServicioId);
+               
+                _context.Update(turno);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Servicios");
+            }
+            return View(turno);
+        }
+
+        private async Task<Cliente> ClienteExists2(string? Email)
+        {
+            var cliente = await _context.Cliente.Where(e => e.Email == Email).FirstOrDefaultAsync();
+
+            return cliente;
         }
 
 
 
         // GET: Turnos/Details/5
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Turno == null)
@@ -49,7 +92,6 @@ namespace TPDetailing2.Controllers
             }
 
             var turno = await _context.Turno
-                //.Include(t => t.Empleado)
                 .Include(t => t.Servicio)
                 .Include(t => t.cliente)
                 .FirstOrDefaultAsync(m => m.TurnoId == id);
@@ -75,7 +117,7 @@ namespace TPDetailing2.Controllers
         // POST: Turnos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TurnoId,Fecha,Realizado,ClienteId,ServicioId,EmpleadoId")] Turno turno)
@@ -93,7 +135,7 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Turnos/Edit/5
-       [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+       [Authorize(Roles = "ADMIN, CLIENTE")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Turno == null)
@@ -115,7 +157,7 @@ namespace TPDetailing2.Controllers
         // POST: Turnos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TurnoId,Fecha,Realizado,ClienteId,ServicioId,EmpleadoId")] Turno turno)
@@ -152,7 +194,7 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Turnos/Delete/5
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Turno == null)
@@ -175,7 +217,7 @@ namespace TPDetailing2.Controllers
         }
 
         // POST: Turnos/Delete/5
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -201,38 +243,6 @@ namespace TPDetailing2.Controllers
           return _context.Turno.Any(e => e.TurnoId == id);
         }
 
-        [Authorize(Roles = "EMPLEADO, ADMIN, CLIENTE")]
-        [HttpGet]
-        public async Task<IActionResult> CargarTurno(int id)
-        {
-            string mail = _userManager.GetUserName(User);
-            Cliente cliente = await ClienteExists2(mail);
-            int idU = cliente.UsuarioId;
-            TempData["UserID"] = idU;
-            Turno? t = await _context.Turno.FindAsync(id);
-            return View(t);
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> CargarTurno(Turno turno)
-        {
-            if (ModelState.IsValid)
-            {
-
-                _context.Update(turno);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("Index");
-            }
-
-            return View(turno);
-        }
-
-        private async Task<Cliente> ClienteExists2(string? Email)
-        {
-            var cliente = await _context.Cliente.Where(e => e.Email == Email).FirstOrDefaultAsync();
-
-            return cliente;
-        }
     }
 }

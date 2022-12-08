@@ -2,29 +2,31 @@
 
 @{
     ViewData["Title"] = "CargarTurno";
-}
-@{
-    //int servicioId = TempData["ServicioId2"];
-    //var servicioPre = (double)TempData["ServicioPre"];
-    //var servicioNom = (string)TempData["ServicioNom"];
+
+    var nom = (string)TempData["ServicioNom1"];
     var userId = (int)TempData["UserID"];
+    var servicioId = (int)TempData["ServicioId1"];
+    var servicioPrecio = (int)TempData["ServicioPre1"];
 }
+
 
 <h1>Confirmar Turno</h1>
 
 <h4>Turno</h4>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
 
-        <div>
+        <div class="form-group">
             <label class="control-label">Servicio</label>
-            <input type="text" value=@TempData["ServicioNom"] readonly />
+            <input type="text" value=@nom class="form-control" disabled />
         </div>
 
-        <div>
+        <div class="form-group">
             <label class="control-label">Importe</label>
-            <input type="text" value=@TempData["ServicioPre"] readonly />
+            <input type="text" value=@servicioPrecio class="form-control" disabled />
         </div>
 
         <form asp-action="CargarTurno">
@@ -33,6 +35,11 @@
             <input type="hidden" asp-for="TurnoId" />
             <input type="hidden" asp-for="Disponible" value=true />
             
+            <div class="form-group">
+                <label asp-for=ServicioId class="control-label"></label>
+                <input asp-for=ServicioId value=@servicioId class="form-control" readonly />
+            </div>
+
             <div class="form-group">
                 <label asp-for=Fecha class="control-label"></label>
                 <input asp-for="Fecha" class="form-control" readonly/>
@@ -43,16 +50,7 @@
                 <input asp-for=ClienteId value=@userId class="form-control" readonly/>
             </div>
 
-            <div class="form-group">
-                <label asp-for=ServicioId class="control-label"></label>
-                <input asp-for=ServicioId value=@TempData["ServicioId2"] class="form-control" readonly />
-            </div>
-
-            @*<div class="form-group">
-                <label asp-for="EmpleadoId" class="control-label"></label>
-                <select asp-for="EmpleadoId" class="form-control" asp-items="ViewBag.EmpleadoId"></select>
-            </div>*@
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <input type="submit" value="Confirmar" class="btn btn-primary" />
             </div>
         </form>
@@ -60,7 +58,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Servicios" asp-action="Index">Inicio</a>
 </div>
 
 @section Scripts {

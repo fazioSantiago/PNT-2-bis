@@ -25,11 +25,11 @@ namespace TPDetailing2.Models
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [Range(0,1000000, ErrorMessage = ErrorViewModel.PrecioValido)]
-        public double? Costo { get; set; }
+        public int? Costo { get; set; }
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [Range(0,1000000, ErrorMessage = ErrorViewModel.PrecioValido)]
-        public double? PrecioFinal { get; set; }
+        public int? PrecioFinal { get; set; }
 
     }
 }

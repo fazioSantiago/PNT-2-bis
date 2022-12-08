@@ -54,7 +54,7 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Servicios/Create
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Create()
         {
             return View();
@@ -63,7 +63,7 @@ namespace TPDetailing2.Controllers
         // POST: Servicios/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ServicioId,Nombre,Descripcion,FotoUrl,Costo,PrecioFinal")] Servicio servicio)
@@ -81,7 +81,7 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Servicios/Edit/5
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Servicio == null)
@@ -100,7 +100,7 @@ namespace TPDetailing2.Controllers
         // POST: Servicios/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ServicioId,Nombre,Descripcion,FotoUrl,Costo,PrecioFinal")] Servicio servicio)
@@ -134,7 +134,7 @@ namespace TPDetailing2.Controllers
         }
 
         // GET: Servicios/Delete/5
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Servicio == null)
@@ -153,7 +153,7 @@ namespace TPDetailing2.Controllers
         }
 
         // POST: Servicios/Delete/5
-        [Authorize(Roles = "EMPLEADO, ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -167,15 +167,13 @@ namespace TPDetailing2.Controllers
             {
                 _context.Servicio.Remove(servicio);
                 await _context.SaveChangesAsync();
-            }
-            
-            
+            }            
             return RedirectToAction(nameof(Index));
         }
 
         private bool ServicioExists(int id)
         {
-          return _context.Servicio.Any(e => e.ServicioId == id);
+            return _context.Servicio.Any(e => e.ServicioId == id);
         }
         
     }
