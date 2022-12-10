@@ -13,12 +13,14 @@ namespace TPDetailing2.Models
 
         [DisplayName("Disponible")]
         public bool Disponible { get; set; } = true;
-        
+
+        [DisplayName("Cliente ID")]
         public int? ClienteId { get; set; }
         
         [ForeignKey("ClienteId")]
         public Cliente? cliente { get; set; }
-                
+
+        [DisplayName("Servicio ID")]
         public int? ServicioId { get; set; }          
         
         [ForeignKey("ServicioId")]

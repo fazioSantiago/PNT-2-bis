@@ -1,0 +1,26 @@
+﻿@model TPDetailing2.Models.Filtro
+
+@{
+    SelectList clts = ViewBag.Clientes;
+    SelectList svs = ViewBag.Servicios;
+}
+
+<form asp-action="Filtrar">
+            <div class="form-group">
+                <label class="control-label m-1">Servicio</label>
+                <select asp-for="idServicio" class="form-control" asp-items="svs">
+                    <option value="null">Vacio</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label m-1">Cliente</label>
+                <select asp-for="idCliente" class="form-control" asp-items="clts">
+                    <option value="null">Vacio</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Confirmar" class="btn btn-primary mt-2" />
+            </div>
+ </form>
+
+

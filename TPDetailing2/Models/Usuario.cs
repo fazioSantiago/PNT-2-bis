@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace TPDetailing2.Models
 {
     public class Usuario
     {
         [Key]
+        [DisplayName("Cliente ID")]
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]

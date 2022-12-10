@@ -6,6 +6,7 @@ namespace TPDetailing2.Models
     public class Servicio
     {
         [Key]
+        [DisplayName("Servicio ID")]
         public int ServicioId { get; set; }
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
@@ -25,10 +26,12 @@ namespace TPDetailing2.Models
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [Range(0,1000000, ErrorMessage = ErrorViewModel.PrecioValido)]
+        [DisplayName("Costo")]
         public int? Costo { get; set; }
 
         [Required(ErrorMessage = ErrorViewModel.CampoRequerido)]
         [Range(0,1000000, ErrorMessage = ErrorViewModel.PrecioValido)]
+        [DisplayName("Precio")]
         public int? PrecioFinal { get; set; }
 
     }
