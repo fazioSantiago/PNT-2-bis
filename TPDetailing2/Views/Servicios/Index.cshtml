@@ -4,7 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Servicios</h1>
+@*<h1>Servicios</h1>*@
+
+<div class="card bg-dark text-white text-center">
+    <img src="https://www.constantcontact.com/blog/wp-content/uploads/2021/01/Blog-header-3-1.jpg" class="card-img" alt="...">
+    <div class="card-img-overlay">
+        <p class="card-title align-content-between mt-5" style="font-size:100px; font-family:'Segoe Print'">BIENVENIDOS</p>
+        
+    </div>
+</div>
+
+<h5 class="card-text text-center mt-3">RESERVÁ NUESTROS SERVICIOS:</h5>
 
 @if (User.IsInRole("ADMIN"))
 {
@@ -33,7 +43,7 @@
             }
            
             <th>
-                @Html.DisplayNameFor(model => model.PrecioFinal)
+                @Html.DisplayNameFor(model => model.PrecioFinal)     
             </th>
             <th></th>
         </tr>
@@ -58,7 +68,7 @@
             }
            
             <td>
-                @Html.DisplayFor(modelItem => item.PrecioFinal)
+                    <b>$ @Html.DisplayFor(modelItem => item.PrecioFinal)</b>                
             </td>
             @if (User.IsInRole("ADMIN"))
             {
@@ -72,7 +82,7 @@
             @if (User.IsInRole("CLIENTE"))
             {
             <td>
-                <a asp-action="Index" asp-controller="Turnos" asp-route-id="@item.ServicioId">Reservar</a>
+                <a class="btn btn-success" asp-action="Index" asp-controller="Turnos" asp-route-id="@item.ServicioId">Reservar</a>
             </td>
             } 
            

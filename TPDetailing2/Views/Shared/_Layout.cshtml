@@ -33,7 +33,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
                             </li>
                         }
-                        @if (User.IsInRole("ADMIN") || User.IsInRole("CLIENTE"))
+                        @if (User.IsInRole("ADMIN"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Turnos" asp-action="Index">Turnos</a>
@@ -57,7 +57,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - TPDetailing2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - TPDetailing2 <a asp-area="" asp-controller="Home" asp-action="Privacy">@*Privacy*@</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
